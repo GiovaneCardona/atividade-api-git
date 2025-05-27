@@ -16,6 +16,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
       - name: Build with Maven
         run: mvn -B package
@@ -26,5 +27,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: calculadora-api
-          path: target/*.jarc
+          name: calculadora-api  # Nome estático como você queria
+          path: target/*.jar
