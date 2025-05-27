@@ -1,6 +1,5 @@
 package com.example.AtividadeAPI;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -57,6 +56,7 @@ public class CalculadoraControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/calculadora/dividir")
                         .param("a", "10")
                         .param("b", "0"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.mensagem").value("Divisor não pode ser zero"));
     }
 }

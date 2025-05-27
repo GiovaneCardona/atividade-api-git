@@ -1,5 +1,6 @@
 package com.example.AtividadeAPI;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,25 +8,25 @@ import org.springframework.web.bind.annotation.*;
 public class CalculadoraController {
 
     @GetMapping("/somar")
-    public double somar(@RequestParam double a, @RequestParam double b) {
-        return a + b;
+    public ResponseEntity<Double> somar(@RequestParam double a, @RequestParam double b) {
+        return ResponseEntity.ok(a + b);
     }
 
     @GetMapping("/subtrair")
-    public double subtrair(@RequestParam double a, @RequestParam double b) {
-        return a - b;
+    public ResponseEntity<Double> subtrair(@RequestParam double a, @RequestParam double b) {
+        return ResponseEntity.ok(a - b);
     }
 
     @GetMapping("/multiplicar")
-    public double multiplicar(@RequestParam double a, @RequestParam double b) {
-        return a * b;
+    public ResponseEntity<Double> multiplicar(@RequestParam double a, @RequestParam double b) {
+        return ResponseEntity.ok(a * b);
     }
 
     @GetMapping("/dividir")
-    public double dividir(@RequestParam double a, @RequestParam double b) {
+    public ResponseEntity<?> dividir(@RequestParam double a, @RequestParam double b) {
         if (b == 0) {
-            throw new IllegalArgumentException("Divisor não pode ser zero");
+            return ResponseEntity.badRequest().body("Divisor não pode ser zero");
         }
-        return a / b;
+        return ResponseEntity.ok(a / b);
     }
 }
