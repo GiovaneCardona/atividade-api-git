@@ -4,9 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -57,6 +61,24 @@ public class CalculadoraControllerTest {
                         .param("a", "10")
                         .param("b", "0"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mensagem").value("Divisor não pode ser zero"));
+    }
+
+    @Test
+    public void testDividirComValoresDecimais() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calculadora/dividir")
+                        .param("a", "10.5")
+                        .param("b", "2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("5.25"));
+    }
+
+    @Test
+    public void testOperacaoInvalida() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calculadora/operacao-invalida"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.erro").value("Endpoint não encontrado"));
     }
 }
